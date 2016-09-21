@@ -117,6 +117,10 @@ static void mali_print_core_version(void __iomem *regs)
 		gpu_model, mali_get_core_numbers(regs), major, minor);
 };
 
+#if !defined(CONFIG_OF)
+#error Kernel does not support Open Firmware!
+#endif
+
 static struct of_device_id mali_dt_ids[] = {
 	{ .compatible = "arm,mali-400" },
 	{ /* sentinel */ },
@@ -138,11 +142,15 @@ int mali_platform_device_register(void)
 	np = of_find_matching_node(NULL, mali_dt_ids);
 	
 	if (!np) {
-		np = of_find_node_by_name(NULL, "gpu");
-	}
-	
-	if (!np) {
 		pr_err("Couldn't find the mali node\n");
+		
+		pr_err("List of all nodes:\n");
+		np = of_find_all_nodes(NULL);
+		while(np) {
+			pr_err("'%s' (%s)\n", np->name, np->full_name);
+			np = of_find_all_nodes(np);
+		}
+		
 		return -ENODEV;
 	}
 
