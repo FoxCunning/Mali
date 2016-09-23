@@ -9,7 +9,7 @@
  */
 
 #include <drm/drmP.h>
-#include "../include/mali_drm.h"
+#include "mali_drm.h"
 #include "mali_drv.h"
 
 #define VIDEO_TYPE 0

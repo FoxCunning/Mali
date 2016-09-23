@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010, 2012-2013, 2016 ARM Limited. All rights reserved.
+ * Copyright (C) 2010, 2012-2013, 2015 ARM Limited. All rights reserved.
  * 
  * This program is free software and is provided to you under the terms of the GNU General Public License version 2
  * as published by the Free Software Foundation, and any use by you of this program is subject to the terms of such GNU licence.
@@ -19,16 +19,17 @@
 #define DRIVER_MINOR        1
 #define DRIVER_PATCHLEVEL   0
 
-//#include "drm_sman.h"
 #include <drm/drm_legacy.h>
 
 typedef struct drm_mali_private
 {
 	drm_local_map_t *mmio;
 	unsigned int idle_fault;
-	struct drm_sman sman;
+	unsigned int chipset;
 	int vram_initialized;
 	unsigned long vram_offset;
+	struct drm_mm vram_mm;
+	struct idr object_idr;
 } drm_mali_private_t;
 
 extern int mali_idle(struct drm_device *dev);
